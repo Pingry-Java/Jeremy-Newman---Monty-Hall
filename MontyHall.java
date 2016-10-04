@@ -15,18 +15,50 @@ public class MontyHall
 	// Reveal a goat (aka non-sticky note)
 	System.out.println("There is a goat behind door number " + revealDoor(carDoor, userDoor));
 	
+	// Makes other door in case user wants to switch
+	int otherDoor = getOtherDoor(userDoor, revealDoor(carDoor, userDoor));
+	
 	// Ask whether the user wants to swap doors.
 	boolean swap = getUserSwap();
 	
+	// Checks whether the user's new door is correct
+	boolean check;
+	if (swap == false)
+		check = checkIfUserIsCorrect(userDoor, carDoor);
+	else
+		check = checkIfUserIsCorrect(otherDoor, carDoor);
+	
+	// Tells user if they won or lost
+	if (check == true)
+		System.out.println("You chose the correct door! You win a brand new car!!!");
+	else
+		System.out.println("You chose the incorrect door. :( But you get a goat!");
+	}
+	
+	/**
+	* Method checks to see if the user chose the correct door
+	*
+	* @param chosenDoor The door that the user has chosen
+	* @param correctDoor The correct door that the car is behind
+	* @return Returns whether or not the user chose the correct door
+	*/
+	
+	public static boolean checkIfUserIsCorrect(int chosenDoor, int correctDoor)
+	{
+		if (chosenDoor == correctDoor)
+			return true;
+		else
+			return false;
 	}
 	
 	/**
 	* This method calculates and returns a door for the host to reveal as not the Grand Prize door.
 	*
-	* @param invalid1 A door that the hst cannot open
-	* @param invalid1 A door that the hst cannot open (may be the same as invalid1).
+	* @param invalid1 A door that the host cannot open
+	* @param invalid1 A door that the host cannot open (may be the same as invalid1).
 	* @return The number of a door containing a goat.
 	*/
+	
 	public static int revealDoor(int invalid1, int invalid2)
 	{
 		// Loop through all possible doors until I find one that can be revealed
@@ -62,11 +94,29 @@ public class MontyHall
 	
 	public static boolean getUserSwap()
 	{
-	System.out.print("Would you like to switch doors? \"true\" for yes, and \"false\" for no: ");
+	System.out.print("Would you like to switch doors? \"true\" for yes, or \"false\" for no: ");
 	String switchDoor = keyboard.nextLine();
 	if (switchDoor.equals("true"))
 		return true;
 	else
 		return false;
+	}
+	
+	/** 
+	* Method finds out the door that's not the user door or the revealed door
+	*
+	* @param invalid1 A door that otherDoor cannot be
+	* @param invalid2 A door that otherDoor cannot be
+	* @return Returns the number door that the other door will be
+	*/
+	
+	public static int getOtherDoor(int invalid1, int invalid2)
+	{
+		for (int otherDoor = 1; otherDoor < 4; otherDoor++)
+		{
+			if (otherDoor != invalid1 && otherDoor != invalid2)
+				return otherDoor;
+		}
+		return -1;
 	}
 }
